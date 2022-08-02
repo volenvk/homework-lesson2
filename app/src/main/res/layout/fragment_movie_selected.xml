@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MovieSelected">
+    
+    <androidx.constraintlayout.widget.ConstraintLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/constraint_default"
+            android:paddingEnd="@dimen/constraint_default"
+            android:id="@+id/constraintLayout">
+        
+        <ImageView
+                android:id="@+id/cinemaImageView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="12dp"
+                android:scaleType="fitXY"
+                android:clickable="false"
+                tools:src="@drawable/avatar_2"
+                android:layout_marginBottom="@dimen/constraint_default"
+                android:contentDescription="@string/cinema_desc"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/textViewAboutLabel"/>
+        
+        <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/cinemaLikeCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:rotation="-30"
+                android:button="@drawable/checkbox_selector"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/textViewAboutLabel" app:layout_constraintVertical_bias="1.0"/>
+        
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewAboutLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:text="@string/cinema_about_hint"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintVertical_bias="0.7"/>
+        
+        <androidx.core.widget.NestedScrollView
+                android:id="@+id/scrollViewAboutCinema"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:scrollbars="vertical"
+                android:layout_marginBottom="40dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewAboutLabel"
+                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="8dp">
+            
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/cinemaAboutTextView"
+                    android:typeface="normal"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:clickable="false"
+                    android:textAlignment="center"
+                    android:layout_marginBottom="48dp"
+                    tools:text="@string/cinema_info"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent"
+                    app:layout_constraintBottom_toTopOf="parent"/>
+        </androidx.core.widget.NestedScrollView>
+        
+        <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/addCommentButton"
+                android:layout_width="60dp"
+                android:layout_height="45dp"
+                android:src="@drawable/icon_add_comment"
+                android:background="#0003A9F4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/constraintLayout"
+                tools:ignore="SpeakableTextPresentCheck"
+                app:layout_constraintHorizontal_bias="1.0" app:layout_constraintTop_toBottomOf="@+id/cinemaImageView"
+                app:layout_constraintVertical_bias="1.0"/>
+    
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
