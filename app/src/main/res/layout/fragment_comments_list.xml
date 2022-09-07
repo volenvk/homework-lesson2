@@ -13,7 +13,7 @@ android:padding="@dimen/constraint_default">
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="LinearLayoutManager"
-            tools:context=".CommentsFragment"
+            tools:context=".fragments.Comments"
             tools:listitem="@layout/fragment_comment"/>
 
     <com.google.android.material.textfield.TextInputEditText
