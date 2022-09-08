@@ -23,12 +23,12 @@ class MovieSelected : Fragment() {
                 throw IllegalArgumentException("You need to specify info data to launch this fragment")
     }
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentMovieSelectedBinding.inflate(inflater, container, false)
-
         binding.addCommentButton.setOnClickListener { navigator()?.showComments() }
-
+        binding.cinemaImageView.setImageResource(movieInfo.image_id!!)
+        binding.cinemaAboutTextView.setText(movieInfo.description)
+        binding.cinemaLikeCheckBox.isChecked = movieInfo.is_like
         return binding.root
     }
 
@@ -42,8 +42,8 @@ class MovieSelected : Fragment() {
     }
 
     override fun onDetach() {
-        super.onDetach()
         navigator()?.publishResult(movieInfo)
+        super.onDetach()
     }
 
     companion object {

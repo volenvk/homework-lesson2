@@ -17,8 +17,8 @@ class ListMovies : Fragment() {
 
     private lateinit var binding: FragmentListMoviesBinding
     private lateinit var options: Options
-    private var moviesSaveState: MoviesSaveState by Delegates.notNull()
-    private var movieSelected: Int = -1
+    private var moviesSaveState: MoviesSaveState = MoviesSaveState()
+    private var movieSelected: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,18 +26,19 @@ class ListMovies : Fragment() {
                 arguments?.getParcelable(ARG_OPTIONS) ?:
                 throw IllegalArgumentException("You need to specify options to launch this fragment")
 
-        moviesSaveState = savedInstanceState?.getParcelable(KEY_CINEMA_STATES) ?: MoviesSaveState()
+        savedInstanceState?.getParcelable<MoviesSaveState>(KEY_CINEMA_STATES)?.let { moviesSaveState = it }
+        savedInstanceState?.getInt(KEY_CINEMA_SELECTED_INDEX)?.let { movieSelected = it }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentListMoviesBinding.inflate(inflater, container, false)
-
-        navigator()?.listenResult(MoviesSaveState::class.java, viewLifecycleOwner) {
-            moviesSaveState = it
+        navigator()?.listenResult(MovieInfo::class.java, viewLifecycleOwner) { info ->
+            movieSelected?.let {
+                setCinemaTitleColor(it)
+                moviesSaveState.movies[it] = info
+            }
         }
-
-        createCinemaList(options.count)
-
+        createCinemaList(options.count, savedInstanceState)
         return binding.root
     }
 
@@ -45,54 +46,41 @@ class ListMovies : Fragment() {
         super.onSaveInstanceState(outState)
         outState.putParcelable(KEY_OPTIONS, options)
         outState.putParcelable(KEY_CINEMA_STATES, moviesSaveState)
-        outState.putInt(KEY_CINEMA_SELECTED_INDEX, movieSelected)
+        movieSelected?.let { outState.putInt(KEY_CINEMA_SELECTED_INDEX, it) }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        setCinemaTitleColor()
-    }
-
-    private fun setCinemaTitleColor() {
-        if (movieSelected > -1) {
-            Log.i("setCinemaTitleColor", "cinemaIndex: $movieSelected")
-            val id = binding.flowCinema.referencedIds[movieSelected]
-            this.childFragmentManager.findFragmentById(id)?.let {
-                Log.d("cinemaTitleTextView", "SetTextColor: gray")
-                MovieItemBinding.inflate(it.layoutInflater).cinemaTitleTextView.setTextColor(Color.GRAY)
-            }
+    private fun setCinemaTitleColor(index: Int) {
+        Log.i("setCinemaTitleColor", "cinemaIndex: $index")
+        val id = binding.flowCinema.referencedIds[index]
+        val cinemaBinding = binding.root.getViewById(id)?.tag as? MovieItemBinding
+        cinemaBinding?.let {
+            Log.d("cinemaTitleTextView", "SetTextColor: gray")
+            it.cinemaTitleTextView.setTextColor(Color.GRAY)
         }
     }
 
-    private fun createCinemaList(count: Int){
+    private fun createCinemaList(count: Int, outState: Bundle?){
         val mapIterator = Movies.movies_posters.iterator()
         val movieBindings = (0 until count).map { index ->
             val movieBinding = MovieItemBinding.inflate(layoutInflater)
             movieBinding.root.id = View.generateViewId()
             if (mapIterator.hasNext()){
                 val next = mapIterator.next()
-                moviesSaveState.movies[index] = MovieInfo(next.second, next.first)
+                val info = MovieInfo(image_id = next.second, description = Movies.movies_info[next.first])
+                moviesSaveState.movies[index] = info
                 movieBinding.cinemaImageView.setImageResource(next.second)
                 movieBinding.cinemaTitleTextView.text = next.first
                 movieBinding.root.tag = movieBinding
-                movieBinding.cinemaDetailsButton.setOnClickListener { showItemSelected(index) }
+                movieBinding.cinemaDetailsButton.setOnClickListener {
+                    movieSelected = index
+                    navigator()?.showMovieSelected(info)
+                }
                 binding.root.addView(movieBinding.root)
             } else movieBinding.root.tag = null
             movieBinding
         }
         binding.flowCinema.referencedIds = movieBindings.filter { it.root.tag != null }.map { it.root.id }.toIntArray()
         Log.d("createCinemaList", "referencedIds: ${binding.flowCinema.referencedIds.size}")
-    }
-
-    private fun showItemSelected(index: Int){
-        if (index >= 0) {
-            movieSelected = index
-            moviesSaveState.movies[index]?.let { navigator()?.showMovieSelected(it) }
-        }
     }
 
     companion object {

@@ -25,7 +25,7 @@ class MainActivity : BaseActivity(), INavigator {
     }
 
     override fun showComments() {
-        Comments.newInstance(1)
+        Comments.newInstance().launch()
     }
 
     override fun goBack() {
