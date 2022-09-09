@@ -12,8 +12,11 @@ data class MovieInfo(
     val image_id: Int? = null,
     val description: String? = null,
     var is_like: Boolean = false,
-    val commentaries: MutableList<CommentItem> = mutableListOf()
+    var commentaries: PersonComments? = null
 ): Parcelable
+
+@Parcelize
+data class PersonComments(val commentaries: List<CommentItem> = listOf()): Parcelable
 
 @Parcelize
 data class CommentItem(val author: CommentAuthor, val comment: String, val date: Date = Date()): Parcelable

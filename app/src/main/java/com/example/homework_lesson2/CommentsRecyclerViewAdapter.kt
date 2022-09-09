@@ -9,7 +9,7 @@ import android.widget.TextView
 import com.example.homework_lesson2.placeholder.PlaceholderContent.PlaceholderItem
 import com.example.homework_lesson2.databinding.FragmentCommentBinding
 
-class CommentsRecyclerViewAdapter(private val values: List<PlaceholderItem>): RecyclerView.Adapter<CommentsRecyclerViewAdapter.ViewHolder>() {
+class CommentsRecyclerViewAdapter(private val values: List<PlaceholderItem> = listOf()): RecyclerView.Adapter<CommentsRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(FragmentCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false))

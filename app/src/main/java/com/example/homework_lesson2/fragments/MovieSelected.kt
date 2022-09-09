@@ -1,6 +1,5 @@
 package com.example.homework_lesson2.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.homework_lesson2.data.INavigator.Companion.navigator
 import com.example.homework_lesson2.data.model.MovieInfo
+import com.example.homework_lesson2.data.model.PersonComments
 import com.example.homework_lesson2.databinding.FragmentMovieSelectedBinding
 
 class MovieSelected : Fragment() {
@@ -26,11 +26,12 @@ class MovieSelected : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentMovieSelectedBinding.inflate(inflater, container, false)
-        binding.addCommentButton.setOnClickListener { navigator()?.showComments() }
+        binding.addCommentButton.setOnClickListener { navigator()?.showComments(movieInfo.commentaries) }
         binding.cinemaImageView.setImageResource(movieInfo.image_id!!)
         binding.cinemaAboutTextView.setText(movieInfo.description)
         binding.cinemaLikeCheckBox.isChecked = movieInfo.is_like
         binding.cinemaLikeCheckBox.setOnClickListener { movieInfo.is_like = binding.cinemaLikeCheckBox.isChecked }
+        navigator()?.listenResult(PersonComments::class.java, viewLifecycleOwner) { movieInfo.commentaries = it }
         return binding.root
     }
 
