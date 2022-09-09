@@ -1,5 +1,6 @@
 package com.example.homework_lesson2.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -29,16 +30,13 @@ class MovieSelected : Fragment() {
         binding.cinemaImageView.setImageResource(movieInfo.image_id!!)
         binding.cinemaAboutTextView.setText(movieInfo.description)
         binding.cinemaLikeCheckBox.isChecked = movieInfo.is_like
+        binding.cinemaLikeCheckBox.setOnClickListener { movieInfo.is_like = binding.cinemaLikeCheckBox.isChecked }
         return binding.root
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putParcelable(KEY_MOVIE_INFO, movieInfo)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
     }
 
     override fun onDetach() {

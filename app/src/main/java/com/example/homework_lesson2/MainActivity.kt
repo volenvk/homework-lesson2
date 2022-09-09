@@ -17,7 +17,7 @@ class MainActivity : BaseActivity(), INavigator {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater).also { setContentView(it.root) }
 
-        ListMovies.newInstance(Options.DEFAULT).launch()
+        if (savedInstanceState == null) ListMovies.newInstance(Options.DEFAULT).launch()
     }
 
     override fun showMovieSelected(info: MovieInfo) {
