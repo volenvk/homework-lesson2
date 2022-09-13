@@ -3,6 +3,7 @@ package com.example.homework_lesson2
 import android.os.Bundle
 import com.example.homework_lesson2.data.BaseActivity
 import com.example.homework_lesson2.data.INavigator
+import com.example.homework_lesson2.data.model.CommentAuthor
 import com.example.homework_lesson2.data.model.MovieInfo
 import com.example.homework_lesson2.data.model.Options
 import com.example.homework_lesson2.data.model.PersonComments
@@ -10,6 +11,7 @@ import com.example.homework_lesson2.databinding.ActivityMainBinding
 import com.example.homework_lesson2.fragments.Comments
 import com.example.homework_lesson2.fragments.ListMovies
 import com.example.homework_lesson2.fragments.MovieSelected
+import com.example.homework_lesson2.fragments.RequestAuthorDialogFragment
 
 class MainActivity : BaseActivity(), INavigator {
 
@@ -28,6 +30,20 @@ class MainActivity : BaseActivity(), INavigator {
 
     override fun showComments(commentaries: PersonComments?) {
         Comments.newInstance(commentaries).launch()
+    }
+
+    override fun showAuthorDialog() {
+        val dialog = RequestAuthorDialogFragment.newInstance()
+        dialog.show(supportFragmentManager, RequestAuthorDialogFragment.TAG)
+    }
+
+    override fun showAuthorAlertDialog() {
+        val dialog = RequestAuthorDialogFragment.newInstance(true)
+        dialog.show(supportFragmentManager, RequestAuthorDialogFragment.TAG)
+    }
+
+    override fun setupResultDialog(result: (CommentAuthor) -> Unit) {
+        RequestAuthorDialogFragment.setupListener(supportFragmentManager, this) { result(it) }
     }
 
     override fun goBack() {

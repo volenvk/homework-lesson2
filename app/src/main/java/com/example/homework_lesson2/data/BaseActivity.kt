@@ -56,8 +56,7 @@ abstract class BaseActivity: AppCompatActivity() {
         })
     }
 
-    open fun updateUI() {
-    }
+    open fun updateUI() { }
 
     companion object {
         @JvmStatic private val KEY_RESULT = "key_result"

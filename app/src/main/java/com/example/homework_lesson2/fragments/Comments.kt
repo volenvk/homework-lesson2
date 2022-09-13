@@ -34,7 +34,9 @@ class Comments : Fragment() {
         binding.list.layoutManager = GridLayoutManager(context, GRID_LAYOUT_COLUMN_COUNT)
         commentaries?.let { placeholderContent.addRange(it.commentaries) }
         binding.list.adapter = CommentsRecyclerViewAdapter(placeholderContent.values)
+        showAuthorDialog()
         setOnCommentEditListener()
+        setupAuthorDialogFragmentListener()
         return binding.root
     }
 
@@ -46,6 +48,16 @@ class Comments : Fragment() {
     override fun onDetach() {
         navigator()?.publishResult(placeholderContent.getCommentaries())
         super.onDetach()
+    }
+
+    private fun showAuthorDialog(){
+        navigator()?.showAuthorDialog()
+    }
+
+    private fun setupAuthorDialogFragmentListener(){
+        navigator()?.setupResultDialog { result ->
+            result.takeIf { it.name.isNotBlank() }?.let { author = it } ?: navigator()?.showAuthorAlertDialog()
+        }
     }
 
     private fun setOnCommentEditListener() {
