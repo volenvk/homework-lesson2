@@ -38,6 +38,7 @@ class ListMovies : Fragment() {
             movieSelected?.let { moviesSaveState!!.movies[it] = info }
         }
         movieSelected?.let { setCinemaTitleColor(it) }
+        binding.sharedButton.setOnClickListener { navigator()?.sharedApp() }
         return binding.root
     }
 

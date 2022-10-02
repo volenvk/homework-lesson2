@@ -1,6 +1,8 @@
 package com.example.homework_lesson2
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import com.example.homework_lesson2.data.BaseActivity
 import com.example.homework_lesson2.data.INavigator
 import com.example.homework_lesson2.data.model.CommentAuthor
@@ -13,6 +15,7 @@ import com.example.homework_lesson2.fragments.ListMovies
 import com.example.homework_lesson2.fragments.MovieSelected
 import com.example.homework_lesson2.fragments.RequestAuthorDialogFragment
 
+
 class MainActivity : BaseActivity(), INavigator {
 
     private lateinit var binding: ActivityMainBinding
@@ -20,7 +23,6 @@ class MainActivity : BaseActivity(), INavigator {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater).also { setContentView(it.root) }
-
         if (savedInstanceState == null) ListMovies.newInstance(Options.DEFAULT).launch()
     }
 
@@ -48,5 +50,19 @@ class MainActivity : BaseActivity(), INavigator {
 
     override fun goBack() {
         onBackPressed()
+    }
+
+    override fun showToast(message: String, duration: Int){
+        Toast.makeText(this, message, duration).show()
+    }
+
+    override fun sharedApp() {
+        val sendIntent = Intent().also {
+            it.action = Intent.ACTION_SEND
+            it.putExtra(Intent.EXTRA_SUBJECT, "App")
+            it.putExtra(Intent.EXTRA_TEXT, R.string.shared_app)
+            it.type = "text/plain"
+        }
+        startActivity(sendIntent)
     }
 }
